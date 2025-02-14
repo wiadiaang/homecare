@@ -2,7 +2,7 @@ services:
     web:
         build:
             context: ./
-            dockerfile: ./.docker/php/Dockerfile.local
+            dockerfile: ./docker/8.3/Dockerfile
         ports:
             - ${APP_PORT:-8000}:8000
             - ${VITE_PORT:-5173}:${VITE_PORT:-5173}
@@ -12,7 +12,7 @@ services:
         networks:
             - localNetwork
         depends_on:
-            - mysql
+            # - mysql
             - redis
             - minio
             - mailpit
@@ -65,7 +65,7 @@ services:
         volumes:
             - ${MINIO_VOLUME_LOCAL:-./storage/minio-data}:/data
         networks:
-            - lara11-beta
+            - localNetwork
         command: minio server /data/minio --console-address ":${FORWARD_MINIO_CONSOLE_PORT}"
         healthcheck:
             test:
@@ -85,5 +85,5 @@ services:
         networks:
             - localNetwork
 networks:
-    lara11-beta:
+    localNetwork:
         driver: bridge
